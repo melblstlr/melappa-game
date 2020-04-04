@@ -1,0 +1,118 @@
+<div class="row mb-3">
+  <div class="col-md-12">
+    <h1>
+      List of all challenges
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+    <h2>
+      Add a new challenge
+    </h2>
+
+    <form action="/insert_challenge" method="post">
+      <div class="form-group">
+        <label for="name_box">
+          Name
+        </label>
+
+        <input type="text" id="name_box" name="query_name" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="description_box">
+          Description
+        </label>
+
+        <input type="text" id="description_box" name="query_description" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="scoring_box">
+          Scoring
+        </label>
+
+        <input type="text" id="scoring_box" name="query_scoring" class="form-control">
+      </div>
+
+      <button class="btn btn-block btn-outline-secondary">
+        Create challenge
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div class="row mb-3">
+  <div class="col-md-12">
+    <table class="table">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Name
+        </th>
+
+        <th>
+          Description
+        </th>
+
+        <th>
+          Scoring
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @challenges.each do |challenge| %>
+      <tr>
+        <td>
+          <%= challenge.id %>
+        </td>
+
+        <td>
+          <%= challenge.name %>
+        </td>
+
+        <td>
+          <%= challenge.description %>
+        </td>
+
+        <td>
+          <%= challenge.scoring %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(challenge.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(challenge.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/challenges/<%= challenge.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>

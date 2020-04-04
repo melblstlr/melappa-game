@@ -1,0 +1,86 @@
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+    <h1>
+      Group #<%= @group.id %> details
+    </h1>
+
+    <div class="row mb-3">
+      <div class="col">
+        <a href="/groups" class="btn btn-block btn-outline-secondary">
+          Go back
+        </a>
+      </div>
+
+      <div class="col">
+        <a href="/delete_group/<%= @group.id %>" class="btn btn-block btn-outline-secondary">
+          Delete group
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Game
+      </dt>
+      <dd>
+        <%= @group.game_id %>
+      </dd>
+
+      <dt>
+        User
+      </dt>
+      <dd>
+        <%= @group.user_id %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@group.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@group.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+    <h2>
+      Edit group
+    </h2>
+
+    <form action="/modify_group/<%= @group.id %>"  method="post" >
+      <div class="form-group">
+        <label for="game_id_box">
+          Game
+        </label>
+
+        <input type="text" id="game_id_box" name="query_game_id" class="form-control" value="<%= @group.game_id %>">
+      </div>
+
+      <div class="form-group">
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id" class="form-control" value="<%= @group.user_id %>">
+      </div>
+
+      <button class="btn btn-block btn-outline-secondary">
+        Update group
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

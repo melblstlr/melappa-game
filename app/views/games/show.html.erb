@@ -1,0 +1,195 @@
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+
+    <h1>
+      Game code: #<%= @game.code %> 
+    </h1>
+
+    <div class="row mb-3">
+      <div class="col">
+        <a href="/" class="btn btn-block btn-outline-secondary">
+          Go back
+        </a>
+      </div>
+
+      <div class="col">
+        <a href="/delete_game/<%= @game.id %>" class="btn btn-block btn-outline-secondary">
+          Delete game
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Players
+      </dt>
+      <dd>
+        <% users_id = @group.pluck(:user_id)%>
+        <%= User.where({:id => users_id}).pluck(:username).to_sentence %>
+      </dd>
+    </dl>
+
+  </div>
+</div>
+
+<hr>
+
+<!-- select challenge -->
+
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+  <%if @current_challenge == nil%>
+  <strong><em> Read these instructions before starting </em></strong>
+  <p> Before you begin, make sure you get everyone on some type of video conferencing platform. Google Hangouts, Zoom, and Whereby are all some examples. Feel free to use whatever you like.</p>
+
+  <p> We also recommend setting up some kind of chat group on the phone, like a Whatsapp group with all the team members on it. Some challenges will require phone use. </p>  
+
+  <p>Once everyone is on, click the button below to start. Challenges will come up one by one. Read the instructions and the scoring before beginning </p> 
+  
+  <p>If you really enjoyed the challenge, feel free to repeat it again. Just award additional points for the additional rounds. Submit the all points together. </p>
+
+  <p>If you ever want to skip a challenge, feel free to select the next one, and everyone will get 0 points for the skipped challenge. </p>
+
+
+    <form action="/start_challenge" method="post">
+      <input type="hidden" value="<%=@game.id%>" name="query_game_id" class="form-control">
+        <%@group.each do |group|%>
+          <%user = User.where({:id => group.user_id}).at(0)%>
+          <input type="hidden" id="user_id_box" value="<%=user.id%>" name="<%=user.email%>" class="form-control">
+        <%end%>
+
+      <button class="btn btn-block btn-outline-secondary">
+        Start game (wait until everyone has joined)
+      </button>
+    </form>  
+
+  <%else%>
+    <h2> Challenge # <%=@challenge_number%> </h2>
+      <dl>
+        <dt>
+          Name
+        </dt>
+        <dd>
+          <%= @current_challenge.name %>
+        </dd>
+
+        <dt>
+          Description
+        </dt>
+        <dd>
+          <%= @current_challenge.description %>
+        </dd>
+
+        <dt>
+          Scoring
+        </dt>
+        <dd>
+          <%= @current_challenge.scoring %>
+        </dd>
+      </dl>
+
+      <form action="/next_challenge" method="post">
+        <input type="hidden" value="<%=@current_challenge.id%>" name="query_challenge_id" class="form-control">
+        <input type="hidden" value="<%=@game.id%>" name="query_game_id" class="form-control">
+          <%@group.each do |group|%>
+            <%user = User.where({:id => group.user_id}).at(0)%>
+            <input type="hidden" id="user_id_box" value="<%=user.id%>" name="<%=user.email%>" class="form-control">
+          <%end%>
+
+        <button class="btn btn-block btn-outline-secondary">
+          Next challenge
+        </button>
+      </form>
+    <%end%>
+
+  </div>
+</div>
+
+<hr>
+
+<!-- scores -->
+<%if @current_challenge == nil%>
+<%else%>
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+
+    <form action="/modify_score" method="post">
+      <input type="hidden" value="<%=@current_challenge.id%>" name="query_challenge_id" class="form-control">
+      <input type="hidden" value="<%=@game.id%>" name="query_game_id" class="form-control">
+      
+      <%@group.each do |group|%>
+
+        <div class="form-group">
+          <label for="user_id_box">
+              <%user = User.where({:id => group.user_id}).at(0)%>
+              <%=user.username + "'s score"%>
+          </label>
+          <input type="hidden" id="user_id_box" value="<%=user.id%>" name="<%=user.email%>" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <input type="number" step="1" name="<%=user.id%>" class="form-control">
+        </div>
+
+      <%end%>
+
+      <button class="btn btn-block btn-outline-secondary">
+        Update Scores
+      </button>
+
+    </form>
+  </div>
+</div>
+<%end%>
+
+<hr>
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+    <table class="table">
+      </tr>
+        <th>
+          Challenge
+        </th>
+        <%@group.each do |group|%>
+          <th>
+            <%user = User.where({:id => group.user_id}).at(0)%>
+            <%=user.username%>
+          </th>
+        <%end%>
+      </tr>
+
+      <tr>
+
+        <td><strong> Total </strong></td>
+
+        <%@group.each do |group|%>
+          <td> <strong>
+            <%user = User.where({:id => group.user_id}).at(0)%>
+            <%= Score.where({:user_id => user.id}).where({:game_id => @game.id}).sum(:score)%>
+          </strong> </td>
+        <%end%>
+
+      </tr>
+
+      <% @completed_challenge.each do |challenge| %>
+      <tr>
+
+        <td>
+          <%=challenge.name %>
+        </td>
+
+        <%@group.each do |group|%>
+          <td>
+            <%user = User.where({:id => group.user_id}).at(0)%>
+            <%= Score.where({:user_id => user.id}).where({:challenge_id => challenge.id}).where({:game_id => @game.id}).at(0).score%>
+          </td>
+        <%end%>
+
+      </tr>
+      <% end %>
+
+    </table>
+  </div>
+</div>
+
+<hr>

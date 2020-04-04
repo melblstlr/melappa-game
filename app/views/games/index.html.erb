@@ -1,0 +1,86 @@
+<div class="row mb-3">
+  <div class="col-md-12">
+    <h1>
+      List of all games
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+    <h2>
+      Add a new game
+    </h2>
+
+    <form action="/insert_game" method="post">
+      <div class="form-group">
+        <label for="code_box">
+          Code
+        </label>
+
+        <input type="text" id="code_box" name="query_code" class="form-control">
+      </div>
+
+      <button class="btn btn-block btn-outline-secondary">
+        Create game
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div class="row mb-3">
+  <div class="col-md-12">
+    <table class="table">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Code
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @games.each do |game| %>
+      <tr>
+        <td>
+          <%= game.id %>
+        </td>
+
+        <td>
+          <%= game.code %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(game.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(game.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/games/<%= game.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>

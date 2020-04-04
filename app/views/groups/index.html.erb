@@ -1,0 +1,102 @@
+<div class="row mb-3">
+  <div class="col-md-12">
+    <h1>
+      List of all groups
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+    <h2>
+      Add a new group
+    </h2>
+
+    <form action="/insert_group" method="post">
+      <div class="form-group">
+        <label for="game_id_box">
+          Game
+        </label>
+
+        <input type="text" id="game_id_box" name="query_game_id" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id" class="form-control">
+      </div>
+
+      <button class="btn btn-block btn-outline-secondary">
+        Create group
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div class="row mb-3">
+  <div class="col-md-12">
+    <table class="table">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Game
+        </th>
+
+        <th>
+          User
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @groups.each do |group| %>
+      <tr>
+        <td>
+          <%= group.id %>
+        </td>
+
+        <td>
+          <%= group.game_id %>
+        </td>
+
+        <td>
+          <%= group.user_id %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(group.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(group.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/groups/<%= group.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>

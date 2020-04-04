@@ -1,0 +1,116 @@
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+    <h1>
+      Score #<%= @score.id %> details
+    </h1>
+
+    <div class="row mb-3">
+      <div class="col">
+        <a href="/scores" class="btn btn-block btn-outline-secondary">
+          Go back
+        </a>
+      </div>
+
+      <div class="col">
+        <a href="/delete_score/<%= @score.id %>" class="btn btn-block btn-outline-secondary">
+          Delete score
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Game
+      </dt>
+      <dd>
+        <%= @score.game_id %>
+      </dd>
+
+      <dt>
+        User
+      </dt>
+      <dd>
+        <%= @score.user_id %>
+      </dd>
+
+      <dt>
+        Challenge
+      </dt>
+      <dd>
+        <%= @score.challenge_id %>
+      </dd>
+
+      <dt>
+        Score
+      </dt>
+      <dd>
+        <%= @score.score %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@score.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@score.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+    <h2>
+      Edit score
+    </h2>
+
+    <form action="/modify_score/<%= @score.id %>"  method="post" >
+      <div class="form-group">
+        <label for="game_id_box">
+          Game
+        </label>
+
+        <input type="text" id="game_id_box" name="query_game_id" class="form-control" value="<%= @score.game_id %>">
+      </div>
+
+      <div class="form-group">
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id" class="form-control" value="<%= @score.user_id %>">
+      </div>
+
+      <div class="form-group">
+        <label for="challenge_id_box">
+          Challenge
+        </label>
+
+        <input type="text" id="challenge_id_box" name="query_challenge_id" class="form-control" value="<%= @score.challenge_id %>">
+      </div>
+
+      <div class="form-group">
+        <label for="score_box">
+          Score
+        </label>
+
+        <input type="text" id="score_box" name="query_score" class="form-control" value="<%= @score.score %>">
+      </div>
+
+      <button class="btn btn-block btn-outline-secondary">
+        Update score
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

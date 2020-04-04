@@ -1,0 +1,101 @@
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+    <h1>
+      Challenge #<%= @challenge.id %> details
+    </h1>
+
+    <div class="row mb-3">
+      <div class="col">
+        <a href="/challenges" class="btn btn-block btn-outline-secondary">
+          Go back
+        </a>
+      </div>
+
+      <div class="col">
+        <a href="/delete_challenge/<%= @challenge.id %>" class="btn btn-block btn-outline-secondary">
+          Delete challenge
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Name
+      </dt>
+      <dd>
+        <%= @challenge.name %>
+      </dd>
+
+      <dt>
+        Description
+      </dt>
+      <dd>
+        <%= @challenge.description %>
+      </dd>
+
+      <dt>
+        Scoring
+      </dt>
+      <dd>
+        <%= @challenge.scoring %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@challenge.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@challenge.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+    <h2>
+      Edit challenge
+    </h2>
+
+    <form action="/modify_challenge/<%= @challenge.id %>"  method="post" >
+      <div class="form-group">
+        <label for="name_box">
+          Name
+        </label>
+
+        <input type="text" id="name_box" name="query_name" class="form-control" value="<%= @challenge.name %>">
+      </div>
+
+      <div class="form-group">
+        <label for="description_box">
+          Description
+        </label>
+
+        <input type="text" id="description_box" name="query_description" class="form-control" value="<%= @challenge.description %>">
+      </div>
+
+      <div class="form-group">
+        <label for="scoring_box">
+          Scoring
+        </label>
+
+        <input type="text" id="scoring_box" name="query_scoring" class="form-control" value="<%= @challenge.scoring %>">
+      </div>
+
+      <button class="btn btn-block btn-outline-secondary">
+        Update challenge
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
