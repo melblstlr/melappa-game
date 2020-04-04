@@ -79,12 +79,9 @@ class ChallengesController < ApplicationController
     @scores = Score.where({:game_id => the_game_id})
 
     @scores.each do |score|
-      p "HELLO BOO"
-      p score.current
       if score.current == true
         score.current = false
         score.save
-        p "THATS RIGHT B"
         p score.current
       end
     end
