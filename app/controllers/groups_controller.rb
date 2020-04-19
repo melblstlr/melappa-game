@@ -14,7 +14,7 @@ class GroupsController < ApplicationController
     @user.email = @user.username + rand(1000).to_s + rand(1000).to_s + "@random.com"
     @user.save
 
-    #session.store(:user_id, @user.id)
+    session.store(:user_id, @user.id)
   
     @group = Group.new
     @group.game_id = @game.id
