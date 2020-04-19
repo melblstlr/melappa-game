@@ -5,19 +5,6 @@
       Game code: #<%= @game.code %> 
     </h1>
 
-    <div class="row mb-3">
-      <div class="col">
-        <a href="/" class="btn btn-block btn-outline-secondary">
-          Go back
-        </a>
-      </div>
-
-      <div class="col">
-        <a href="/delete_game/<%= @game.id %>" class="btn btn-block btn-outline-secondary">
-          Delete game
-        </a>
-      </div>
-    </div>
 
     <dl>
       <dt>
@@ -33,35 +20,61 @@
 </div>
 
 <hr>
+<!-- Form to add your own challenge-->
 
-<!-- select challenge -->
+<div class = "row mb-3">
+  <div class = "col-md-8 offset-md-2">
+    <h4> Do you have a challenge that you'd love to see the group complete?</h4>
+  </div>
+
+  <div class="col-md-8 offset-md-2">
+    <a href="/challenges/<%=@game.code%>" class="btn btn-block btn-outline-secondary">
+      Add your own challenge here!
+    </a>
+  </div>
+</div>
+
+<!-- Opening instructions before challenge starts-->
 
 <div class="row mb-3">
   <div class="col-md-8 offset-md-2">
   <%if @current_challenge == nil%>
   <strong><em> Read these instructions before starting </em></strong>
-  <p> Before you begin, make sure you get everyone on some type of video conferencing platform. Google Hangouts, Zoom, and Whereby are all some examples. Feel free to use whatever you like.</p>
+  <p> Welcome to HelloHome!
+  First, set up video conferencing platform for everyone to join. Google Hangouts and Zoome are two examples.
+  Use whatever you like, but make sure the platform has a chat function. Screen share may be helpful as well.</p>
 
-  <p> We also recommend setting up some kind of chat group on the phone, like a Whatsapp group with all the team members on it. Some challenges will require phone use. </p>  
-
-  <p>Once everyone is on, click the button below to start. Challenges will come up one by one. Read the instructions and the scoring before beginning </p> 
+  <p>This game involves a series of challenges, that may range from lip-sync battles to meditation minutes. These challenges will be 
+  randomly selected as you play the game. Each challenge will provide a description and scoring. You'll have to read through each one 
+  before starting.</p>
   
-  <p>If you really enjoyed the challenge, feel free to repeat it again. Just award additional points for the additional rounds. Submit the all points together. </p>
+  <p>If you really like the challenge, feel free to repeat it again. Simply award additional points. </p>
 
-  <p>If you ever want to skip a challenge, feel free to select the next one, and everyone will get 0 points for the skipped challenge. </p>
+  <p>If you really <em>don't</em> like a challenge, skip it! No harm done. </p>
 
+  <p>Once everyone is on, the person who created the game will click the button below to start. The button will only show up for that person.
+  Additionally, the game creator will be the only one who can move to the next challenge and who can award score. So make sure that whoever
+  that person is does not exit their browser or go back at any point. Otherwise, you'll have to restart.</p>
 
-    <form action="/start_challenge" method="post">
-      <input type="hidden" value="<%=@game.id%>" name="query_game_id" class="form-control">
-        <%@group.each do |group|%>
-          <%user = User.where({:id => group.user_id}).at(0)%>
-          <input type="hidden" id="user_id_box" value="<%=user.id%>" name="<%=user.email%>" class="form-control">
-        <%end%>
+  <p>Now you're ready to begin, we hope you enjoy!</p> 
 
-      <button class="btn btn-block btn-outline-secondary">
-        Start game (wait until everyone has joined)
-      </button>
-    </form>  
+  <!-- Button to start game-->
+
+    <%if @current_user.id == @group.where({:game_id => @game.id}).where({:master => true}).pluck(:user_id).at(0)%>
+      <form action="/start_challenge" method="post">
+        <input type="hidden" value="<%=@game.id%>" name="query_game_id" class="form-control">
+          <%@group.each do |group|%>
+            <%user = User.where({:id => group.user_id}).at(0)%>
+            <input type="hidden" id="user_id_box" value="<%=user.id%>" name="<%=user.email%>" class="form-control">
+          <%end%>
+
+        <button class="btn btn-block btn-outline-secondary">
+          Start game (wait until everyone has joined)
+        </button>
+      </form>  
+    <%end%>
+
+  <!-- Current challenge information -->
 
   <%else%>
     <h2> Challenge # <%=@challenge_number%> </h2>
@@ -87,60 +100,116 @@
           <%= @current_challenge.scoring %>
         </dd>
       </dl>
+  
+    <!-- Form to Randomize a challenge -->
+        <div class="pt-2">
+          <form action="/next_challenge" method="post" class="pt-2">
+            <input type="hidden" value="<%=@current_challenge.id%>" name="query_challenge_id" class="form-control">
+            <input type="hidden" value="<%=@game.id%>" name="query_game_id" class="form-control">
+              <%@group.each do |group|%>
+                <%user = User.where({:id => group.user_id}).at(0)%>
+                <input type="hidden" id="user_id_box" value="<%=user.id%>" name="<%=user.email%>" class="form-control">
+              <%end%>
 
-      <form action="/next_challenge" method="post">
-        <input type="hidden" value="<%=@current_challenge.id%>" name="query_challenge_id" class="form-control">
-        <input type="hidden" value="<%=@game.id%>" name="query_game_id" class="form-control">
-          <%@group.each do |group|%>
-            <%user = User.where({:id => group.user_id}).at(0)%>
-            <input type="hidden" id="user_id_box" value="<%=user.id%>" name="<%=user.email%>" class="form-control">
-          <%end%>
+            <button class="btn btn-block btn-outline-secondary">
+              Randomize Next Challenge (Recommended!)
+            </button>
+          </form>
+        <div>
 
-        <button class="btn btn-block btn-outline-secondary">
-          Next challenge
-        </button>
-      </form>
-    <%end%>
+  
 
-  </div>
-</div>
+  <!-- Form to Select the next challenge for the group -->
 
-<hr>
+      <%if @current_user.id == @group.where({:game_id => @game.id}).where({:master => true}).pluck(:user_id).at(0)%>
+        <div class = "pt-2">
+          <form action="/pick_challenge" method="post">
+            <input type="hidden" value="<%=@current_challenge.id%>" name="query_challenge_id" class="form-control">
+            <input type="hidden" value="<%=@game.id%>" name="query_game_id" class="form-control">
+              <%@group.each do |group|%>
+                  <%user = User.where({:id => group.user_id}).at(0)%>
+                  <input type="hidden" id="user_id_box" value="<%=user.id%>" name="<%=user.email%>" class="form-control">
+                <%end%>  
 
-<!-- scores -->
-<%if @current_challenge == nil%>
-<%else%>
-<div class="row mb-3">
-  <div class="col-md-8 offset-md-2">
-
-    <form action="/modify_score" method="post">
-      <input type="hidden" value="<%=@current_challenge.id%>" name="query_challenge_id" class="form-control">
-      <input type="hidden" value="<%=@game.id%>" name="query_game_id" class="form-control">
-      
-      <%@group.each do |group|%>
-
-        <div class="form-group">
-          <label for="user_id_box">
-              <%user = User.where({:id => group.user_id}).at(0)%>
-              <%=user.username + "'s score"%>
-          </label>
-          <input type="hidden" id="user_id_box" value="<%=user.id%>" name="<%=user.email%>" class="form-control">
-        </div>
-
-        <div class="form-group">
-          <input type="number" step="1" name="<%=user.id%>" class="form-control">
+            <label for="challenge_name_box">OR Select Your Challenge:</label>
+              <select type = "text" id="challenge_name_box" name="query_chalenge_name" class="form-control">
+                <%challenge_selection = Challenge.where({:game_id => nil}).or(Challenge.where({:game_id => @game.id}))%>
+                <%challenge_selection.each do |challenge|%>
+                  <option value="<%=challenge.name%>">
+                    <%=challenge.name%>
+                  </option>
+                <%end%>
+              </select>
+              
+            <button class="btn btn-block btn-outline-secondary mt-1">
+              Select Next Challenge
+            </button>
+          </form> 
         </div>
 
       <%end%>
 
-      <button class="btn btn-block btn-outline-secondary">
-        Update Scores
-      </button>
+    <%end%>
+  
+  <hr>
 
-    </form>
+    <!-- Refresh page-->
+
+    <div class="row mb-3 pt-2">
+        <div class="col">
+          <a href="/games/<%= @game.code %>" class="btn btn-block btn-outline-secondary">
+            Refresh Page
+          </a>
+        </div>
+    </div>
+
   </div>
 </div>
+
+
+<!-- Form to update the scores-->
+
+<%if @current_user.id == @group.where({:game_id => @game.id}).where({:master => true}).pluck(:user_id).at(0)%>
+<hr>
+
+  <%if @current_challenge == nil%>
+  <%else%>
+  <div class="row mb-3">
+    <div class="col-md-8 offset-md-2">
+
+      <form action="/modify_score" method="post">
+        <input type="hidden" value="<%=@current_challenge.id%>" name="query_challenge_id" class="form-control">
+        <input type="hidden" value="<%=@game.id%>" name="query_game_id" class="form-control">
+        
+        <%@group.each do |group|%>
+
+          <div class="form-group">
+            <label for="user_id_box">
+                <%user = User.where({:id => group.user_id}).at(0)%>
+                <%=user.username + "'s score"%>
+            </label>
+            <input type="hidden" id="user_id_box" value="<%=user.id%>" name="<%=user.email%>" class="form-control">
+          </div>
+          
+          <%score = Score.where({:user_id => user.id}).where({:game_id => @game.id}).where({:challenge_id => @current_challenge.id}).pluck(:score).at(0)%>
+
+          <div class="form-group">
+            <input type="number" step="1" name="<%=user.id%>" value="<%=score%>" class="form-control">
+          </div>
+
+        <%end%>
+
+        <button class="btn btn-block btn-outline-secondary">
+          Update Scores
+        </button>
+
+      </form>
+    </div>
+  </div>
+  <%end%>
 <%end%>
+
+<!-- Table that displays the scores-->
 
 <hr>
 <div class="row mb-3">
@@ -193,3 +262,15 @@
 </div>
 
 <hr>
+    <!-- Refresh page-->
+
+  <div class="row mb-3 pt-2">
+    <%if @current_user.id == @group.where({:game_id => @game.id}).where({:master => true}).pluck(:user_id).at(0)%>
+      <div class="col">
+        <a href="/delete_game/<%= @game.id %>" class="btn btn-block btn-outline-secondary">
+          End game (Deletes information immediately)
+        </a>
+      </div>
+    <%end%>
+  </div>
+

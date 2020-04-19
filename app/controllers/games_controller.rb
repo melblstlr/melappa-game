@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-
+   before_action(:load_current_user, { :only => [:show] })
 
   def show
     the_code = params.fetch("code_id")
@@ -46,16 +46,13 @@ class GamesController < ApplicationController
     if @user.valid?
       @game.save
       @user.save
-      "USER ID"
-      p @user.username
+      session.store(:user_id, @user.id)
 
       @group = Group.new
       @group.user_id = @user.id
       @group.game_id = @game.id
+      @group.master = true
       @group.save
-      p "GROUP ID"
-      p @group.user_id
-      p @group.game_id
 
       redirect_to("/games/#{@game.code}", { :notice => "Game created successfully." })
       #render({ :template => "games/show.html.erb" })

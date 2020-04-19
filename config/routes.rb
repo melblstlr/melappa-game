@@ -31,9 +31,10 @@ Rails.application.routes.draw do
           
   # READ
   get("/challenges", { :controller => "challenges", :action => "index" })
-  get("/challenges/:path_id", { :controller => "challenges", :action => "show" })
+  get("/challenges/:game_code", { :controller => "challenges", :action => "index" })
   post("/start_challenge", {:controller => "challenges", :action => "start"}) 
   post("/next_challenge", {:controller => "challenges", :action => "next"})
+  post("/pick_challenge", {:controller => "challenges", :action => "pick"})
 
 
   # UPDATE

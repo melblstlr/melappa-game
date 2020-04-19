@@ -14,20 +14,16 @@ class GroupsController < ApplicationController
     @user.password = "password"
     @user.email = @user.username + rand(1000).to_s + rand(1000).to_s + "@random.com"
 
-
     if @user.valid?
       @user.save
-      p "USER ID"
-      p @user.id
-      p @user.username
+      session.store(:user_id, @user.id)
    
       @group = Group.new
       @group.game_id = @game.id
       @group.user_id = @user.id
+      @group.master = false
       @group.save
-      p "GROUP STUFF"
-      p @group.game_id
-      p @group.user_id
+
 
       redirect_to("/games/#{@game.code}", { :notice => "Game joined successfully." })
       #render({ :template => "games/show.html.erb" })

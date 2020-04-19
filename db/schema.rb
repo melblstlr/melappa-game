@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_02_150124) do
+ActiveRecord::Schema.define(version: 2020_04_18_065600) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2020_04_02_150124) do
     t.string "scoring"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "game_id"
   end
 
   create_table "games", force: :cascade do |t|
@@ -57,6 +58,7 @@ ActiveRecord::Schema.define(version: 2020_04_02_150124) do
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "master"
   end
 
   create_table "scores", force: :cascade do |t|

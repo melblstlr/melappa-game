@@ -1,20 +1,29 @@
 <div class="row mb-3">
-  <div class="col-md-12">
+  <div class="col-md-12 offset-md-2">
     <h1>
-      List of all challenges
+      Add a new challenge
     </h1>
   </div>
 </div>
 
 <hr>
 
+
+
 <div class="row mb-3">
   <div class="col-md-8 offset-md-2">
-    <h2>
-      Add a new challenge
-    </h2>
 
     <form action="/insert_challenge" method="post">
+
+      <div class="form-group">
+        <label for="game_box">
+          Game Code
+        </label>
+
+        <input type="text" id="game_box" name="query_game_code" value ="<%=@game_code%>"class="form-control">
+      </div>
+      
+      
       <div class="form-group">
         <label for="name_box">
           Name
@@ -39,80 +48,31 @@
         <input type="text" id="scoring_box" name="query_scoring" class="form-control">
       </div>
 
-      <button class="btn btn-block btn-outline-secondary">
+      <button class="btn btn-block btn-outline-secondary mb-5">
         Create challenge
       </button>
     </form>
   </div>
-</div>
 
-<hr>
-<div class="row mb-3">
-  <div class="col-md-12">
-    <table class="table">
-      <tr>
-        <th>
-          ID
-        </th>
 
-        <th>
-          Name
-        </th>
-
-        <th>
-          Description
-        </th>
-
-        <th>
-          Scoring
-        </th>
-
-        <th>
-          Created at
-        </th>
-
-        <th>
-          Updated at
-        </th>
-
-        <th>
-        </th>
-      </tr>
-
-      <% @challenges.each do |challenge| %>
-      <tr>
-        <td>
-          <%= challenge.id %>
-        </td>
-
-        <td>
-          <%= challenge.name %>
-        </td>
-
-        <td>
-          <%= challenge.description %>
-        </td>
-
-        <td>
-          <%= challenge.scoring %>
-        </td>
-
-        <td>
-          <%= time_ago_in_words(challenge.created_at) %> ago
-        </td>
-        <td>
-          <%= time_ago_in_words(challenge.updated_at) %> ago
-        </td>
-
-        <td>
-          <a href="/challenges/<%= challenge.id %>">
-            Show details
-          </a>
-        </td>
-      </tr>
-      <% end %>
-    </table>
+  <%if @game_code != nil%>
+  <div class="col-md-8 offset-md-2 pb-5">
+      <div class="col">
+        <a href="/games/<%= @game_code %>" class="btn btn-block btn-outline-secondary">
+          Go Back to Game
+        </a>
+      </div>
   </div>
-</div>
+  <%else%>
+  <div class="col-md-8 offset-md-2 pb-5">
+      <div class="col">
+        <a href="/" class="btn btn-block btn-outline-secondary">
+          Back to Homepage
+        </a>
+      </div>
+  </div>
+  <%end%>
+  </div>
 
 <hr>
+

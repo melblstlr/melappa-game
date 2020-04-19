@@ -3,6 +3,7 @@
 # Table name: groups
 #
 #  id         :integer          not null, primary key
+#  master     :boolean
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  game_id    :integer
