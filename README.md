@@ -1,5 +1,11 @@
 # Base Rails
 
+#deploy to heroku
+heroku login
+git add -A
+git commit -m "April 21 - Updated challenge language"
+
+
 ## Standard Workflow
 
  1. Set up the project: `bin/setup`
