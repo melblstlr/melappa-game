@@ -4,6 +4,13 @@
 heroku login
 git add -A
 git commit -m "April 21 - Updated challenge language"
+git push heroku HEAD:master -f
+
+also useful:
+heroku create my-cool-app
+heroku rename my-awesome-app
+
+#upload a csv
 
 
 ## Standard Workflow
