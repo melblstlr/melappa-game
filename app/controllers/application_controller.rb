@@ -18,4 +18,21 @@ class ApplicationController < ActionController::Base
     render({:template => "index.html.erb"})
   end
 
+  def manage
+    @challenge = Challenge.all
+    @score = Score.all
+    @user = User.all
+    @group = Group.all
+    @game = Game.all
+    render({:template => "manage_data.html.erb"})
+  end
+
+  def clear
+    Score.delete_all
+    User.delete_all
+    Group.delete_all
+    Game.delete_all
+    redirect_to("/manage_data")
+  end
+  
 end

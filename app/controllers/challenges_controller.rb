@@ -5,7 +5,7 @@ class ChallengesController < ApplicationController
   end
 
   def show
-    the_id = params.fetch("path_id")
+    the_id = params.fetch("the_id")
     @challenge = Challenge.where({:id => the_id }).at(0)
 
     render({ :template => "challenges/show.html.erb" })

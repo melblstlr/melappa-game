@@ -1,0 +1,66 @@
+<h2>Hi</h2>
+
+
+  <!-- Form to delete game -->
+      <div class="pt-2">
+        <form action="/clear_data" method="get" class="pt-2">
+
+          <button class="btn btn-block btn-outline-secondary">
+            Clear tables
+          </button>
+        </form>
+      <div>
+
+<div class="row mb-3">
+  <div class="col-md-12">
+    <table class="table">
+      <tr>
+        <th>
+          Name
+        </th>
+
+        <th>
+          Description
+        </th>
+
+        <th>
+          Scoring
+        </th>
+
+        <th>
+          Game ID
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @challenge.each do |challenge| %>
+      <tr>
+        <td>
+          <%= challenge.name %>
+        </td>
+
+        <td>
+          <%= challenge.description %>
+        </td>
+
+        <td>
+          <%= challenge.scoring %>
+        </td>
+
+        <td>
+          <%= challenge.game_id %>
+        </td>
+
+        <td>
+          <a href="/challenge/<%= challenge.id %>">
+            Edit details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+

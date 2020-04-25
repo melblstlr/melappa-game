@@ -3,12 +3,18 @@
 #deploy to heroku
 heroku login
 git add -A
-git commit -m "April 21 - Updated challenge language"
+git commit -m "April 25"
 git push heroku HEAD:master -f
 
 also useful:
 heroku create my-cool-app
 heroku rename my-awesome-app
+
+
+{"adapter"=>"postgresql", "pool"=>5, "timeout"=>5000, "database"=>"dcdrcqg61jljbn",
+"username"=>"rakqphoapbimtl", "password"=>"ceb5a5b3d4914f060fe74f598b25358c108ff57cc1fbe946f3ac9850260da493",
+"port"=>5432, "host"=>"ec2-52-87-58-157.compute-1.amazonaws.com"}
+=> nil
 
 #upload a csv
 

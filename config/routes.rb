@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
 
 
-  #homepage
+  #homepage and editing
   get("/", {:controller => "application", :action => "homepage"})
+  get("/manage_data", {:controller => "application", :action => "manage"})
+  get("/clear_data", {:controller => "application", :action => "clear"})
 
 
   # Routes for the Group resource:
@@ -32,6 +34,7 @@ Rails.application.routes.draw do
   # READ
   get("/challenges", { :controller => "challenges", :action => "index" })
   get("/challenges/:game_code", { :controller => "challenges", :action => "index" })
+  get("/challenge/:the_id", {:controller => "challenges", :action => "show"})
   post("/start_challenge", {:controller => "challenges", :action => "start"}) 
   post("/next_challenge", {:controller => "challenges", :action => "next"})
   post("/pick_challenge", {:controller => "challenges", :action => "pick"})
