@@ -41,7 +41,6 @@ Rails.application.routes.draw do
 
 
   # UPDATE
-  
   post("/modify_challenge/:path_id", { :controller => "challenges", :action => "update" })
   
   # DELETE

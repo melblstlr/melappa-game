@@ -17,11 +17,26 @@ class ChallengesController < ApplicationController
     @challenge.description = params.fetch("query_description")
     @challenge.scoring = params.fetch("query_scoring")
     game_code = params.fetch("query_game_code")
-    @challenge.game_id = Game.where({:code => game_code}).at(0).id
+
+    puts "GAME CODE"
+    puts game_code 
+    
+    if game_code == nil or game_code == ""
+      @challenge.game_id = nil
+    else
+      @challenge.game_id = Game.where({:code => game_code}).at(0).id
+    end
+
+    puts "GAME ID"
+    puts @challenge.game_id
 
     if @challenge.valid?
       @challenge.save
-      redirect_to("/challenges/#{game_code}", { :notice => "Challenge created successfully." })
+      if @challenge.game_id != nil
+        redirect_to("/games/#{game_code}", { :notice => "Challenge created successfully." })
+      else
+        redirect_to("/", { :notice => "Challenge created successfully." })
+      end
     else
       redirect_to("/challenges", { :notice => "Challenge failed to create successfully." })
     end
@@ -30,16 +45,27 @@ class ChallengesController < ApplicationController
   def update
     the_id = params.fetch("path_id")
     @challenge = Challenge.where({ :id => the_id }).at(0)
-
+    game_id = params.fetch("query_gameid")
     @challenge.name = params.fetch("query_name")
     @challenge.description = params.fetch("query_description")
     @challenge.scoring = params.fetch("query_scoring")
 
+    if game_id == nil or game_id == ""
+      @challenge.game_id = nil
+    else
+      game_code = Game.where({:id => game_id}).at(0).code
+      @challenge.game_id = game_id
+    end
+
     if @challenge.valid?
       @challenge.save
-      redirect_to("/challenges/#{@challenge.id}", { :notice => "Challenge updated successfully."} )
+      if @challenge.game_id != nil
+        redirect_to("/games/#{game_code}", { :notice => "Challenge created successfully." })
+      else
+        redirect_to("/", { :notice => "Challenge created successfully." })
+      end
     else
-      redirect_to("/challenges/#{@challenge.id}", { :alert => "Challenge failed to update successfully." })
+      redirect_to("/", { :alert => "Challenge failed to update successfully." })
     end
   end
 
@@ -49,7 +75,7 @@ class ChallengesController < ApplicationController
 
     @challenge.destroy
 
-    redirect_to("/challenges", { :notice => "Challenge deleted successfully."} )
+    redirect_to("/manage_data", { :notice => "Challenge deleted successfully."} )
   end
 
   def start 

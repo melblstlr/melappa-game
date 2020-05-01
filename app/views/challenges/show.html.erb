@@ -70,6 +70,14 @@
       </div>
 
       <div class="form-group">
+        <label for="gameid_box">
+          Game ID
+        </label>
+
+        <input type="text" id="gameid_box" name="query_gameid" class="form-control" value="<%= @challenge.game_id %>">
+      </div>
+
+      <div class="form-group">
         <label for="description_box">
           Description
         </label>
@@ -83,14 +91,6 @@
         </label>
 
         <input type="text" id="scoring_box" name="query_scoring" class="form-control" value="<%= @challenge.scoring %>">
-      </div>
-
-      <div class="form-group">
-        <label for="game_box">
-          Game ID
-        </label>
-
-        <input type="text" id="game_box" name="query_gameid" class="form-control" value="<%= @challenge.game_id %>">
       </div>
 
       <button class="btn btn-block btn-outline-secondary">
