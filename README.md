@@ -3,7 +3,7 @@
 #deploy to heroku
 heroku login
 git add -A
-git commit -m "May 1: Challenge Management Update"
+git commit -m "May 10: Google Analytics"
 git push heroku HEAD:master -f
 
 also useful:
